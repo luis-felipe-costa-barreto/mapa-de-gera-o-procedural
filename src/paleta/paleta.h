@@ -34,27 +34,23 @@ class Paleta{
     Sequencia<Cor> cores;
     public:
         Paleta(string arquivo = ""){
-            int contador = 0;
             ifstream file(arquivo);
             if(file.is_open()){
                 string linha;
                 while(getline(file, linha)){
-                    cores.set(contador, conversao(linha));
-                    contador++;
+                    cores.adicionar(conversao(linha));
                 }
             }
             file.close();
-            quant = contador;
         }
         int obterTamanho(){
-            return quant;
+            return cores.obterTamanho();
         }
         void adicionarCor(Cor cor){
-            cores.set(quant,cor);
-            quant++;
+            cores.adicionar(cor);
         }
         Cor obterCor(int i){
-            if((i >= quant) or (i < 0)){
+            if((i > cores.obterTamanho()) or (i < 0)){
                 return Cor {0, 0, 0};
             }
             return cores.get(i);
