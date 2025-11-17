@@ -8,11 +8,11 @@ TEST_CASE("Testa a criação de uma imagem com largura e altura específicas") {
     CHECK(img.obterAltura() == 50);
 }
 
-/*
+
 TEST_CASE("Testa a modificação e acesso aos pixels da imagem") {
     Imagem img(10, 10);
     Pixel vermelho = {255, 0, 0};
-    img.get(5, 5) = vermelho;
+    img(5, 5) = vermelho;
 
     const Pixel& pixel = img(5, 5);
     CHECK(pixel.r == 255);
@@ -20,6 +20,7 @@ TEST_CASE("Testa a modificação e acesso aos pixels da imagem") {
     CHECK(pixel.b == 0);
 }
 
+/*
 TEST_CASE("Testa a leitura de uma imagem em formato PPM") {
     Imagem img;
     bool sucesso = img.lerPPM("imagem.ppm");
