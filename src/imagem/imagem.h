@@ -3,6 +3,7 @@
 
 typedef Cor Pixel;
 
+//teste
 class Imagem{
     Sequencia<Sequencia<Pixel>> pixels;
     public:
