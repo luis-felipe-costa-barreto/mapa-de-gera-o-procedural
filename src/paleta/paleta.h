@@ -30,7 +30,6 @@ Cor conversao(string hex){
 }
 
 class Paleta{
-    int quant;
     Sequencia<Cor> cores;
     public:
         Paleta(string arquivo = ""){
