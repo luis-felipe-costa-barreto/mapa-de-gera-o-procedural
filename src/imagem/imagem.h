@@ -8,28 +8,22 @@ class Matriz{
     int linhas, colunas, maximo;
     T *entradas;
 
-    void incremento(int parametro = 1){
-        bool transfusao = parametro;
-        maximo *= 20;
+    /*void incremento(){
+        maximo *= 2;
         T *novo = new T[maximo];
-        if (transfusao){
-            for (int i = 0; i < (linhas * colunas); i++){
-                novo[i] = entradas[i];
-            }
+        for (int i = 0; i < (linhas * colunas); i++){
+            novo[i] = entradas[i];
         }
         delete[] entradas;
         entradas = novo;
-    }
+    }*/
 
     public:
         Matriz(int l = 0, int c = 0){
             linhas = l;
             colunas = c;
-            maximo = 4;
+            maximo = (l * c);
             entradas = new T[maximo];
-            while ((linhas * colunas) >= maximo){
-                incremento(0);
-            }
         }
         T& operator()(int l, int c){
             if ((l < 0) or (c < 0) or (l >= linhas) or (c >= colunas)){
@@ -43,20 +37,21 @@ class Matriz{
         int getColunas(){
             return colunas;
         }
-        void adicionarLinha(){
-            linhas++;
-            if ((linhas * colunas) >= maximo){
-                incremento();
-            }
-        }
-        void adicionarColuna(){
-            colunas++;
-            if ((linhas * colunas) >= maximo){
-                incremento();
-            }
-        }
         ~Matriz(){
             delete[] entradas;
+        }
+        Matriz<T>& operator=(const Matriz<T>& outra) {
+            if (this != &outra) { 
+                delete[] entradas;
+                linhas = outra.linhas;
+                colunas = outra.colunas;
+                maximo = outra.maximo;
+                entradas = new T[maximo];
+                for (int i = 0; i < maximo; i++) {
+                    entradas[i] = outra.entradas[i];
+                }
+            }
+            return *this;
         }
 };
 
@@ -64,12 +59,7 @@ class Imagem{
     Matriz<Pixel> pixels;
     public:
         Imagem(int c = 0, int l = 0){
-            for (int i = 0; i < l; i++){
-                pixels.adicionarLinha();
-            }
-            for (int j = 0; j < c; j++){
-                pixels.adicionarColuna();
-            }
+            pixels = Matriz<Pixel> (l, c);
         }
         int obterLargura(){
             return pixels.getColunas();
@@ -79,5 +69,11 @@ class Imagem{
         }
         Pixel& operator()(int l, int c){
             return pixels(l,c);
+        }
+        void lerPPM(string arquivo){
+            ifstream file(arquivo);
+            if (file.is_open()){
+
+            }
         }
 };
