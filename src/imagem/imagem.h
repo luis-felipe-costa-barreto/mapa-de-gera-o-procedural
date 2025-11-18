@@ -19,13 +19,13 @@ class Matriz{
     }*/
 
     public:
-        Matriz(int l = 0, int c = 0){
+        Matriz(int c = 0, int l = 0){
             linhas = l;
             colunas = c;
             maximo = (l * c);
             entradas = new T[maximo];
         }
-        T& operator()(int l, int c){
+        T& operator()(int c, int l){
             if ((l < 0) or (c < 0) or (l >= linhas) or (c >= colunas)){
                 cerr << "índice fora dos limites permitidos" << endl;
             }
@@ -47,7 +47,7 @@ class Matriz{
                 colunas = outra.colunas;
                 maximo = outra.maximo;
                 entradas = new T[maximo];
-                for (int i = 0; i < maximo; i++) {
+                for (int i = 0; i < (linhas * colunas); i++) {
                     entradas[i] = outra.entradas[i];
                 }
             }
@@ -59,7 +59,7 @@ class Imagem{
     Matriz<Pixel> pixels;
     public:
         Imagem(int c = 0, int l = 0){
-            pixels = Matriz<Pixel> (l, c);
+            pixels = Matriz<Pixel> (c, l);
         }
         int obterLargura(){
             return pixels.getColunas();
@@ -67,13 +67,39 @@ class Imagem{
         int obterAltura(){
             return pixels.getLinhas();
         }
-        Pixel& operator()(int l, int c){
-            return pixels(l,c);
+        Pixel& operator()(int c, int l){
+            return pixels(c, l);
         }
-        void lerPPM(string arquivo){
+        bool lerPPM(string arquivo){
+            bool sucesso = true;
             ifstream file(arquivo);
             if (file.is_open()){
-
+                string formato;
+                file >> formato;
+                if (formato == "P3"){
+                    int colunas, linhas, maximo;
+                    file >> colunas >> linhas >> maximo;
+                    if((obterAltura() != linhas) or (obterLargura() != colunas)){
+                        pixels = Matriz<Pixel> (colunas, linhas);
+                    }
+                    int r, g, b;
+                    for (int i = 0; i < linhas; i++){
+                        for(int j = 0; j < colunas; j++){
+                            file >> r >> g >> b;
+                            if((r <= maximo) and (g <= maximo) and (b <= maximo)){
+                                pixels(j, i) = Pixel {r, g, b};
+                            } else{
+                                sucesso = false;
+                                cerr << "Valores superiores ao máximo permitido" << endl;
+                            }
+                        }
+                    }
+                }else{
+                    sucesso = false;
+                    cerr << "Formato errado" << endl;
+                }
+                file.close();
             }
+            return sucesso;
         }
 };
