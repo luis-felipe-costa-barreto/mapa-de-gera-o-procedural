@@ -102,4 +102,21 @@ class Imagem{
             }
             return sucesso;
         }
+        bool salvarPPM(string arquivo){
+            bool sucesso = true;
+            ofstream file(arquivo);
+            if(file.is_open()){
+                file << "P3" << endl << obterLargura() << ' ' << obterAltura() << endl << 255 << endl;
+                for(int i = 0; i < obterAltura(); i++){
+                    for (int j = 0; j < obterLargura(); j++){
+                        file << pixels(j, i).r << ' ' << pixels(j, i).g << ' ' << pixels(j, i).b << endl;
+                    }
+                }
+                file.close();
+            }else{
+                cerr << "Não foi possível abrir o arquivo" << endl;
+                sucesso = false;
+            }
+            return sucesso;
+        }
 };

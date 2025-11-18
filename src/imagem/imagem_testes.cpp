@@ -47,7 +47,6 @@ TEST_CASE("Testa a leitura de uma imagem em formato PPM") {
     CHECK(p4.b == 255);
 }
 
-/*
 TEST_CASE("Testa a salvamento da imagem em formato PPM") {
     Imagem img(2, 2);
     img(0, 0) = {255, 0, 0};   // vermelho
@@ -80,4 +79,4 @@ TEST_CASE("Testa a salvamento da imagem em formato PPM") {
     CHECK(conteudo == "255 255 0");
 
     arquivo.close();
-}*/
+}
