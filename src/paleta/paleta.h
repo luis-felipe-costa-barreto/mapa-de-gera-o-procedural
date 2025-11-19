@@ -10,10 +10,12 @@ struct Cor{
 int soma(string subparte){
     int retorno = 0;
     for(int i = 0; i < 2; i++){
-        if((int(subparte[i]) - 48) >= 10){
-            retorno += (int(subparte[i]) - 87);
-        } else {
-            retorno += (int(subparte[i]) - 48);
+        char c = subparte[i];
+        if (c >= 'a' && c <= 'f') {
+            retorno += c - 'a' + 10;
+        }
+        else if (c >= '0' && c <= '9') {
+            retorno += c - '0';
         }
         if (i == 0){
             retorno *= 16;
