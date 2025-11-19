@@ -14,6 +14,12 @@ TEST_CASE("Testa a geração aleatória de altitudes") {
   CHECK(terreno.obterProfundidade() == 5);
 }
 
+TEST_CASE("Aleatórios"){
+  Terreno terreno(2);
+  terreno(0,0) = 10;
+  CHECK(terreno(0,0) == 10);
+}
+
 
 // Você precisará criar testes adicionais para cobrir os métodos privados da classe.
 // Por exemplo, você pode criar testes para os métodos das etapas Square e Diamond
