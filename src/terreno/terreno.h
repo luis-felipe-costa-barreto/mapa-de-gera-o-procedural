@@ -8,7 +8,7 @@ class Terreno{
     Matriz<int> entradas;
     void formatar(){
         srand(time(0));
-        int valor = limite + (rand()%(limite-limite+1));
+        int valor = (rand()%((2*limite) + 1) - limite);
     }
     void diamond(){}
     void square(){}
