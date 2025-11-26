@@ -14,10 +14,8 @@ class Terreno{
             square(inicio, fim);
             formatar(inicio, (inicio + fim)/2, novo_l);
             formatar((inicio+fim)/2, fim, novo_l);
-            formatar((inicio+fim)/2, inicio, novo_l);
-            formatar(fim, (inicio+fim)/2, novo_l);
-        }else{
-            return;
+            //formatar((inicio+fim)/2, inicio, novo_l);
+            //formatar(fim, (inicio+fim)/2, novo_l);
         }
     }
     void diamond(int inicio, int fim){
@@ -45,7 +43,7 @@ class Terreno{
             rugosidade = rug;
             int x = pow(2, n) + 1;
             entradas = Matriz<int> (x, x);
-            limite = x * 2;
+            limite = x;
             srand(time(0));
             entradas(0,0) = (rand()%((2*limite) + 1) - limite);
             entradas((x-1),0) = (rand()%((2*limite) + 1) - limite);
