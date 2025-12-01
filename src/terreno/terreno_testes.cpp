@@ -16,9 +16,9 @@ TEST_CASE("Testa a geração aleatória de altitudes") {
 }
 
 TEST_CASE("Aleatórios"){
-  Terreno terreno(2);
-  for(int i = 0; i < 5; i++){
-    for (int j = 0; j < 5; j++){
+  Terreno terreno(3);
+  for(int i = 0; i < 9; i++){
+    for (int j = 0; j < 9; j++){
       cout << terreno(j,i) << ' ';
     }
     cout << endl;

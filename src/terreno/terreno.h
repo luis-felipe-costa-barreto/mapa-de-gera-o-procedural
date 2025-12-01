@@ -6,6 +6,12 @@
 class Terreno{
     float rugosidade;
     Matriz<int> entradas;
+    void extremos(int x, int limite){
+        entradas(0,0) = (rand()%((2*limite) + 1) - limite);
+        entradas((x-1),0) = (rand()%((2*limite) + 1) - limite);
+        entradas(0,(x-1)) = (rand()%((2*limite) + 1) - limite);
+        entradas((x-1),(x-1)) = (rand()%((2*limite) + 1) - limite);
+    }
     void formatar(int inicio_l, int fim_l, int inicio_c, int fim_c, int novo_lim){
         if((fim_l - inicio_l) > 1){
             novo_lim *= rugosidade;
@@ -44,10 +50,7 @@ class Terreno{
             entradas = Matriz<int> (x, x);
             int limite = x / 2;
             srand(time(0));
-            entradas(0,0) = (rand()%((2*limite) + 1) - limite);
-            entradas((x-1),0) = (rand()%((2*limite) + 1) - limite);
-            entradas(0,(x-1)) = (rand()%((2*limite) + 1) - limite);
-            entradas((x-1),(x-1)) = (rand()%((2*limite) + 1) - limite);
+            extremos(x, limite);
             formatar(0, x-1, 0, x-1, limite);
         }
         int obterLargura(){
@@ -61,5 +64,23 @@ class Terreno{
                 cerr << "Índice inválido" << endl;
             }
             return entradas(c, l);
+        }
+        void criarTerreno(string hex, int n, string ppm){
+            Paleta paleta = {hex};
+            int x = pow(2, n) + 1;
+            int limite = x / 2;
+            entradas = Matriz<int>(x, x);
+            extremos(x, limite);
+            formatar(0, x-1, 0, x-1, limite);
+            int intervalo = x / paleta.obterTamanho();
+            Imagem imagem = {x, x};
+            int divisao;
+            for (int i = 0; i < x; i++){
+                for(int j = 0; j < x; j++){
+                    divisao = entradas(i, j) / intervalo;
+                    imagem(j, i) = paleta.obterCor(divisao);
+                }
+            }
+            imagem.salvarPPM(ppm);
         }
 };

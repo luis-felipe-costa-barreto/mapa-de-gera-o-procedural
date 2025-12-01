@@ -1,6 +1,7 @@
 #include "../sequencia/sequencia.h"
 #include <string>
 #include <cctype>
+#include <fstream>
 using namespace std;
 
 struct Cor{
