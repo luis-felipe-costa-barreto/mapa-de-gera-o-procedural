@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <cmath>
+#include <algorithm>
 
 class Terreno{
     float rugosidade;
@@ -65,6 +66,28 @@ class Terreno{
             }
             return entradas(c, l);
         }
+        int maior_pico(){
+            int retorno = entradas(0, 0);
+            for (int i = 0; i < obterProfundidade(); i++){
+                for (int j = 0; j < obterLargura(); j++){
+                    if (entradas(i, j) > retorno){
+                        retorno = entradas(i, j);
+                    }
+                }
+            }
+            return retorno;
+        }
+        int menor_vale(){
+            int retorno = entradas(0, 0);
+            for (int i = 0; i < obterProfundidade(); i++){
+                for (int j = 0; j < obterLargura(); j++){
+                    if (entradas(i, j) < retorno){
+                        retorno = entradas(i, j);
+                    }
+                }
+            }
+            return retorno;
+        }
         void criarTerreno(string hex, int n, string ppm){
             Paleta paleta = {hex};
             int x = pow(2, n) + 1;
@@ -77,7 +100,8 @@ class Terreno{
             int divisao;
             for (int i = 0; i < x; i++){
                 for(int j = 0; j < x; j++){
-                    divisao = entradas(i, j) / intervalo;
+                    divisao = (entradas(i, j) + abs(menor_vale())) / intervalo;
+                    cout << entradas(i,j) + abs(menor_vale()) << ' ' << divisao << endl;
                     imagem(j, i) = paleta.obterCor(divisao);
                 }
             }
