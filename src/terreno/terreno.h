@@ -103,6 +103,11 @@ class Terreno{
                     divisao = (entradas(i, j) + abs(menor_vale())) / intervalo;
                     cout << entradas(i,j) + abs(menor_vale()) << ' ' << divisao << endl;
                     imagem(j, i) = paleta.obterCor(divisao);
+                    if ((i != 0) and (j != 0) and (entradas(i-1,j-1) > entradas(i,j))){
+                        imagem(j,i).r *= 0.8;
+                        imagem(j,i).g *= 0.8;
+                        imagem(j,i).b *= 0.8;
+                    }
                 }
             }
             imagem.salvarPPM(ppm);
