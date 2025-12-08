@@ -7,21 +7,25 @@
 class Terreno{
     float rugosidade;
     Matriz<int> entradas;
-    void extremos(int x, int limite){
-        entradas(0,0) = (rand()%((2*limite) + 1) - limite);
-        entradas((x-1),0) = (rand()%((2*limite) + 1) - limite);
-        entradas(0,(x-1)) = (rand()%((2*limite) + 1) - limite);
-        entradas((x-1),(x-1)) = (rand()%((2*limite) + 1) - limite);
+    void extremos(int x){
+        entradas(0,0) = (rand()%((2*(x/2)) + 1) - (x/2));
+        entradas((x-1),0) = (rand()%((2*(x/2)) + 1) - (x/2));
+        entradas(0,(x-1)) = (rand()%((2*(x/2)) + 1) - (x/2));
+        entradas((x-1),(x-1)) = (rand()%((2*(x/2)) + 1) - (x/2));
     }
-    void formatar(int inicio_l, int fim_l, int inicio_c, int fim_c, int novo_lim){
-        if((fim_l - inicio_l) > 1){
-            novo_lim *= rugosidade;
-            diamond(inicio_l, fim_l, inicio_c, fim_c, novo_lim);
-            square(inicio_l, fim_l, inicio_c, fim_c, novo_lim);
-            formatar(inicio_l, (inicio_l + fim_l)/2, inicio_c, (inicio_c + fim_c)/2, novo_lim); //Q2
-            formatar((inicio_l + fim_l)/2, fim_l, (inicio_c + fim_c)/2, fim_c, novo_lim); //Q4
-            formatar(inicio_l, (inicio_l + fim_l)/2, (inicio_c + fim_c)/2, fim_c, novo_lim); //Q1
-            formatar((inicio_l + fim_l)/2, fim_l, inicio_c, (inicio_c + fim_c)/2, novo_lim); //Q3
+    void formatar(int indice){
+        int incremento, i_provisorio, limite = obterProfundidade();
+        for(int i = 0; i < indice; i++){
+            limite *= rugosidade;
+            incremento = (obterProfundidade() - 1)/pow(2,i);
+            for(int i = 0; i < ((obterProfundidade() - 1) / incremento); i++){
+                i_provisorio = 0;
+                while (i_provisorio != ((obterProfundidade() - 1) / incremento)){
+                    diamond((incremento * i), incremento * (i + 1),(incremento * i_provisorio), incremento * (i_provisorio + 1), limite);
+                    square((incremento * i), incremento * (i + 1),(incremento * i_provisorio), incremento * (i_provisorio + 1), limite);
+                    i_provisorio++;
+                }
+            }
         }
     }
     void diamond(int inicio_l, int fim_l, int inicio_c, int fim_c, int novo_lim){
@@ -49,10 +53,14 @@ class Terreno{
             rugosidade = rug;
             int x = pow(2, n) + 1;
             entradas = Matriz<int> (x, x);
-            int limite = x / 2;
+            for (int i = 0; i < x; i++){
+                for (int j = 0; j < x; j++){
+                    entradas(i,j) = 0;
+                }
+            }
             srand(time(0));
-            extremos(x, limite);
-            formatar(0, x-1, 0, x-1, limite);
+            extremos(x);
+            formatar(log2(x-1));
         }
         int obterLargura(){
             return entradas.getColunas();
@@ -91,17 +99,23 @@ class Terreno{
         void criarTerreno(string hex, int n, string ppm){
             Paleta paleta = {hex};
             int x = pow(2, n) + 1;
-            int limite = x / 2;
             entradas = Matriz<int>(x, x);
-            extremos(x, limite);
-            formatar(0, x-1, 0, x-1, limite);
+            for (int i = 0; i < x; i++){
+                for (int j = 0; j < x; j++){
+                    entradas(i,j) = 0;
+                }
+            }
+            extremos(x);
+            formatar(log2(x-1));
             int intervalo = x / paleta.obterTamanho();
             Imagem imagem = {x, x};
             int divisao;
             for (int i = 0; i < x; i++){
                 for(int j = 0; j < x; j++){
                     divisao = (entradas(i, j) + abs(menor_vale())) / intervalo;
-                    cout << entradas(i,j) + abs(menor_vale()) << ' ' << divisao << endl;
+                    if (divisao >= paleta.obterTamanho()){
+                        divisao = paleta.obterTamanho() - 1;
+                    }
                     imagem(j, i) = paleta.obterCor(divisao);
                     if ((i != 0) and (j != 0) and (entradas(i-1,j-1) > entradas(i,j))){
                         imagem(j,i).r *= 0.8;
