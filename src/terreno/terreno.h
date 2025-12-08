@@ -60,7 +60,7 @@ class Terreno{
             }
             srand(time(0));
             extremos(x);
-            formatar(log2(x-1));
+            formatar(n);
         }
         int obterLargura(){
             return entradas.getColunas();
@@ -106,7 +106,7 @@ class Terreno{
                 }
             }
             extremos(x);
-            formatar(log2(x-1));
+            formatar(n);
             int intervalo = x / paleta.obterTamanho();
             Imagem imagem = {x, x};
             int divisao;
